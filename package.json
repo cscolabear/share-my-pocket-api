@@ -1,0 +1,19 @@
+{
+  "name": "pocket-share-my-lover-backend",
+  "version": "1.0.0",
+  "description": "pocket",
+  "main": "index.js",
+  "scripts": {
+    "run": "node server.js",
+    "watch": "node_modules/nodemon/bin/nodemon.js server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cola",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
