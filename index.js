@@ -1,11 +1,14 @@
-const express = require('express')
-const routes = require('./routes')
+const express = require('express');
+const routes = require('./routes');
+const cookieParser = require('cookie-parser');
 
 
-const app = express()
+const app = express();
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
-app.use('/', routes)
+app.use(cookieParser(process.env.COOKIE_PARSER_SIGN_SECRET));
 
-module.exports = app
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use('/', routes);
+
+module.exports = app;

@@ -1,13 +1,28 @@
-module.exports = {
-    list: (req, res) => {
-        const menu = {
-            'Number 9': 1.99,
-            'Number 9 Large': 2.99,
-            'Number 6 with Extra Dip': 3.25,
-            'Number 7': 3.99,
-            'Number 45': 3.45
-        }
+const { pocketApi, pocketApiData } = require('../helper/axios');
+const { getUsername, findUser } = require('./me')
 
-        return res.status(200).json({ menu: menu })
-    }
+
+const list = (req, res) => {
+  const user = findUser(getUsername(req));
+  if (! user) {
+    return res.redirect('/auth');
+  }
+
+  const query = {
+    "access_token": user.access_token,
+    "count": 2,
+    "offset": 0
+  };
+  return pocketApi.post(
+    'get',
+    {...pocketApiData, ...query},
+  )
+    .then(apiRes => {
+      return res.send(apiRes.data);
+    })
+}
+
+
+module.exports = {
+  list,
 }
