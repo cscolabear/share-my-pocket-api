@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "run": "node server.js",
-    "watch": "node_modules/nodemon/bin/nodemon.js server.js",
+    "watch": "node_modules/nodemon/bin/nodemon.js --ignore '*.json' server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Cola",
@@ -16,6 +16,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "node-json-db": "^1.1.0",
     "session-file-store": "^1.5.0"
   },
   "devDependencies": {
