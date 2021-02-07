@@ -7,7 +7,7 @@ const pocketApiData = {
 
 const pocketApi = axios.create({
   baseURL: 'https://getpocket.com/v3/',
-  timeout: 1000,
+  timeout: 3000,
   headers: {'X-Accept': 'application/json',},
 });
 
