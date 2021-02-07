@@ -1,5 +1,5 @@
 const { pocketApi, pocketApiData } = require('../helper/axios');
-const { setUser } = require('./me')
+const userDB = require('../helper/userDB');
 
 
 const getCode = req => {
@@ -7,7 +7,7 @@ const getCode = req => {
   return code;
 }
 
-const aoauthRequest = () => {
+const oauthRequest = () => {
   const redirect_uri = `${process.env.URL}/auth`;
 
   return pocketApi.post(
@@ -26,19 +26,12 @@ const aoauthRequest = () => {
 const main = (req, res) => {
   const code = getCode(req);
   if (! code) {
-    aoauthRequest().then(data => {
-      return res.status(401)
-        .json(data)
-      })
-      return;
+    return oauthRequest().then(data => res.status(401).json(data));
   }
 
-  pocketApi.post(
-    'oauth/authorize',
-    {...pocketApiData, code},
-  )
+  pocketApi.post('oauth/authorize', {...pocketApiData, code},)
     .then(apiRes => {
-      setUser(apiRes.data);
+      userDB.set(apiRes.data.username, apiRes.data.access_token);
       res.cookie(
         'username',
         apiRes.data.username,
@@ -48,10 +41,7 @@ const main = (req, res) => {
     })
     .catch(error => {
       if (error.response && error.response.status === 403) {
-        aoauthRequest().then(data => {
-          return res.status(401).json(data)
-        });
-        return;
+        return oauthRequest().then(data => res.status(401).json(data));
       }
 
       return res.status(error.response.status).json(error.message)
